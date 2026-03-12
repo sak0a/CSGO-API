@@ -1,0 +1,12 @@
+services:
+  csgo-api:
+    build: .
+    ports:
+      - "3000:80"
+    environment:
+      - UPDATE_INTERVAL=3600
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/en/all.json"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
