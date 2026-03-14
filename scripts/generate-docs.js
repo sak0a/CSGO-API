@@ -347,42 +347,44 @@ function generateResponseStructure(sampleObject, isObject = false, isInventory =
 // Function to generate endpoint section HTML
 function generateEndpointSection(endpoint, responseStructureHtml) {
     return `
-                    <div id="${endpoint.id}" class="mb-12">
-                        <h1 class="section-heading">${endpoint.title}</h1>
+                    <div id="${endpoint.id}" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">${endpoint.title}</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            ${endpoint.description}
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                ${endpoint.description}
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">${endpoint.endpoint}</span>
-                            </div>
-                            <a
-                                href="${endpoint.url}"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">${endpoint.endpoint}</span>
+                                </div>
+                                <a
+                                    href="${endpoint.url}"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>${responseStructureHtml}
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>${responseStructureHtml}
+                            </div>
                         </div>
                     </div>`;
 }

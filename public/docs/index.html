@@ -51,240 +51,391 @@
 
             html {
                 font-family: "Inter", sans-serif !important;
+                scroll-padding-top: 2rem;
             }
 
             body {
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
-                background-color: #ffffff;
-                color: #475569;
+                background-color: #0a0a0f;
+                color: #a1a1aa;
                 line-height: 1.6;
+                overflow-x: hidden;
+            }
+
+            /* Ambient background glow */
+            body::before {
+                content: "";
+                position: fixed;
+                top: -40%;
+                left: -20%;
+                width: 80%;
+                height: 80%;
+                background: radial-gradient(ellipse, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            body::after {
+                content: "";
+                position: fixed;
+                bottom: -40%;
+                right: -20%;
+                width: 80%;
+                height: 80%;
+                background: radial-gradient(ellipse, rgba(168, 85, 247, 0.06) 0%, transparent 70%);
+                pointer-events: none;
+                z-index: 0;
             }
 
             hr {
                 border: none;
-                border-top: 1px solid #e2e8f0;
+                border-top: 1px solid rgba(255, 255, 255, 0.06);
                 margin: 3rem 0;
             }
 
-            .language-code {
-                background-color: #1e293b;
-                color: #f1f5f9;
-                border-radius: 0.25rem;
-                padding: 0.25rem 0.5rem;
-                font-size: 0.875rem;
-                font-weight: 500;
-                display: inline-block;
-                margin-right: 0.5rem;
+            /* ── Scroll-triggered animations ── */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(24px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes slideInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-16px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+
+            @keyframes glow-pulse {
+                0%, 100% { opacity: 0.4; }
+                50% { opacity: 1; }
+            }
+
+            .animate-on-scroll {
+                opacity: 0;
+                transform: translateY(24px);
+                transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                            transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .animate-on-scroll.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .stagger-1 { transition-delay: 0.05s; }
+            .stagger-2 { transition-delay: 0.1s; }
+            .stagger-3 { transition-delay: 0.15s; }
+            .stagger-4 { transition-delay: 0.2s; }
+
+            /* ── Hero title animation ── */
+            .hero-title {
+                font-size: 3.5rem;
+                line-height: 1.1;
+                font-weight: 900;
+                letter-spacing: -0.04em;
+                background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #818cf8 100%);
+                background-size: 200% 200%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
+
+            @media (min-width: 640px) {
+                .hero-title {
+                    font-size: 4.5rem;
+                }
+            }
+
+            /* ── Section headings ── */
             .section-heading {
-                font-size: 2rem;
+                font-size: 1.75rem;
                 line-height: 1.2;
                 font-weight: 800;
-                color: #0f172a;
+                color: #f4f4f5;
                 letter-spacing: -0.02em;
                 margin-bottom: 1rem;
+                position: relative;
             }
 
             @media (min-width: 640px) {
                 .section-heading {
-                    font-size: 2.25rem;
+                    font-size: 2rem;
                 }
             }
 
+            /* ── Language codes ── */
+            .language-code {
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+                color: #c4b5fd;
+                border: 1px solid rgba(139, 92, 246, 0.2);
+                border-radius: 0.5rem;
+                padding: 0.25rem 0.75rem;
+                font-size: 0.875rem;
+                font-weight: 600;
+                display: inline-block;
+                margin-right: 0.5rem;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                transition: all 0.3s ease;
+            }
+
+            .language-code:hover {
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));
+                border-color: rgba(139, 92, 246, 0.4);
+                transform: translateY(-1px);
+            }
+
+            /* ── Request info box ── */
             .request-info {
-                background-color: #1e293b;
-                color: #f1f5f9;
-                border-radius: 0.25rem;
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.6));
+                color: #e2e8f0;
+                border-radius: 0.75rem;
                 font-size: 1rem;
-                padding: 0.875rem 1rem;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                padding: 0.875rem 1.25rem;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                border: 1px solid #334155;
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                backdrop-filter: blur(12px);
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .request-info:hover {
+                border-color: rgba(139, 92, 246, 0.3);
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.05);
             }
 
             .request-method {
-                color: #f472b6;
-                font-weight: 600;
+                color: #a78bfa;
+                font-weight: 700;
                 margin-right: 0.75rem;
-                font-size: 0.875rem;
-                letter-spacing: 0.05em;
+                font-size: 0.8rem;
+                letter-spacing: 0.08em;
                 text-transform: uppercase;
             }
 
             .request-icon {
                 width: 1.25rem;
                 height: 1.25rem;
-                color: #94a3b8;
-                transition: color 0.2s;
+                color: #71717a;
+                transition: all 0.3s ease;
             }
 
             .request-icon:hover {
-                color: #f1f5f9;
+                color: #a78bfa;
+                transform: scale(1.1);
             }
 
+            /* ── Base URL box ── */
             .base-url-box {
-                background-color: #1e293b;
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.6));
                 color: #f1f5f9;
-                border-radius: 0.25rem;
+                border-radius: 0.75rem;
                 font-size: 1rem;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                margin-top: 1rem;
+                margin-top: 1.5rem;
                 overflow: hidden;
-                border: 1px solid #334155;
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                backdrop-filter: blur(12px);
+                transition: border-color 0.3s ease;
+            }
+
+            .base-url-box:hover {
+                border-color: rgba(139, 92, 246, 0.2);
             }
 
             .base-url-header {
-                padding: 0.75rem 1rem;
-                border-bottom: 1px solid #334155;
-                background-color: #0f172a;
+                padding: 0.75rem 1.25rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                background: rgba(0, 0, 0, 0.2);
             }
 
             .base-url-header span {
-                color: #f472b6;
-                font-weight: 600;
-                font-size: 0.75rem;
-                letter-spacing: 0.1em;
+                color: #a78bfa;
+                font-weight: 700;
+                font-size: 0.7rem;
+                letter-spacing: 0.12em;
                 text-transform: uppercase;
             }
 
             .base-url-content {
-                padding: 0.75rem 1rem;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                padding: 1rem 1.25rem;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
                 font-size: 0.875rem;
-                color: #cbd5e1;
+                color: #d4d4d8;
                 word-break: break-all;
             }
 
+            /* ── Info box ── */
             .info-box {
-                margin-top: 1rem;
-                padding: 1rem;
-                background-color: #eff6ff;
-                border: 1px solid #bfdbfe;
-                border-radius: 0.25rem;
+                margin-top: 1.5rem;
+                padding: 1.25rem;
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.05));
+                border: 1px solid rgba(99, 102, 241, 0.15);
+                border-radius: 0.75rem;
+                backdrop-filter: blur(12px);
             }
 
             .info-box h3 {
-                font-weight: 600;
-                color: #1e40af;
+                font-weight: 700;
+                color: #a78bfa;
                 margin-bottom: 0.5rem;
                 font-size: 1rem;
             }
 
             .info-box p,
             .info-box ol {
-                color: #1e3a8a;
+                color: #a1a1aa;
                 font-size: 0.875rem;
-                line-height: 1.625;
+                line-height: 1.75;
             }
 
             .info-box code {
-                background-color: rgba(59, 130, 246, 0.1);
-                padding: 0.125rem 0.375rem;
-                border-radius: 0.125rem;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                background: rgba(139, 92, 246, 0.12);
+                padding: 0.125rem 0.5rem;
+                border-radius: 0.25rem;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
                 font-size: 0.8125rem;
-                color: #1e40af;
+                color: #c4b5fd;
                 font-weight: 600;
             }
 
+            .info-box ol {
+                padding-left: 1.5rem;
+            }
+
+            .info-box ol li {
+                margin-bottom: 0.5rem;
+            }
+
+            .info-box ol li strong {
+                color: #c4b5fd;
+            }
+
+            /* ── Response structure ── */
             .response-structure {
                 margin-top: 1rem;
                 padding: 1.25rem;
-                background-color: #1e293b;
-                border-radius: 0.25rem;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.6));
+                border-radius: 0.75rem;
                 overflow: hidden;
-                border: 1px solid #334155;
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                backdrop-filter: blur(12px);
+                transition: border-color 0.3s ease;
+            }
+
+            .response-structure:hover {
+                border-color: rgba(255, 255, 255, 0.1);
             }
 
             .response-structure h4 {
-                color: #f1f5f9;
-                font-weight: 600;
+                color: #f4f4f5;
+                font-weight: 700;
                 margin-bottom: 1rem;
-                font-size: 1rem;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
             }
 
             .structure-item {
-                color: #e2e8f0;
+                color: #d4d4d8;
                 margin-bottom: 0.5rem;
                 line-height: 1.6;
                 font-size: 0.9375rem;
             }
 
             .structure-item.ml-4 {
-                color: #cbd5e1;
+                color: #a1a1aa;
             }
 
             .structure-key {
-                color: #f472b6;
+                color: #c4b5fd;
                 font-weight: 600;
             }
 
             .structure-item.ml-4 .structure-key {
-                color: #cbd5e1;
+                color: #a1a1aa;
                 font-weight: 500;
             }
 
             .structure-type {
-                color: #94a3b8;
+                color: #71717a;
             }
 
             .structure-item.ml-4 .structure-type {
                 font-weight: 500;
             }
 
-            .structure-type.type-string {
-                color: #60a5fa;
-            }
+            .structure-type.type-string { color: #60a5fa; }
+            .structure-type.type-number { color: #fbbf24; }
+            .structure-type.type-boolean { color: #34d399; }
+            .structure-type.type-array { color: #a78bfa; }
+            .structure-type.type-object { color: #f472b6; }
+            .structure-type.type-null { color: #71717a; }
 
-            .structure-type.type-number {
-                color: #f59e0b;
-            }
-
-            .structure-type.type-boolean {
-                color: #10b981;
-            }
-
-            .structure-type.type-array {
-                color: #a78bfa;
-            }
-
-            .structure-type.type-object {
-                color: #ec4899;
-            }
-
-            .structure-type.type-null {
-                color: #94a3b8;
-            }
-
+            /* ── Navigation ── */
             .nav-link {
-                color: #475569;
-                transition: color 0.2s;
-                padding: 0.25rem 0;
+                color: #71717a;
+                transition: all 0.25s ease;
+                padding: 0.375rem 0.75rem;
                 display: block;
+                border-radius: 0.5rem;
+                font-size: 0.875rem;
+                position: relative;
             }
 
             .nav-link:hover {
-                color: #0f172a;
+                color: #e4e4e7;
+                background: rgba(255, 255, 255, 0.04);
             }
 
             .nav-link.active {
-                color: #0f172a;
+                color: #c4b5fd;
                 font-weight: 600;
+                background: rgba(139, 92, 246, 0.1);
             }
 
+            /* ── Sidebar ── */
+            .sidebar-logo {
+                font-size: 1.25rem;
+                font-weight: 900;
+                letter-spacing: -0.03em;
+                background: linear-gradient(135deg, #ffffff, #a78bfa);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            /* ── Mobile header ── */
             .mobile-header {
                 position: fixed;
                 top: 0;
                 left: 0;
                 right: 0;
-                background-color: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(8px);
-                border-bottom: 1px solid #e2e8f0;
+                background: rgba(10, 10, 15, 0.8);
+                backdrop-filter: blur(16px) saturate(180%);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
                 justify-content: space-between;
                 width: 100%;
                 height: 3.5rem;
@@ -332,7 +483,8 @@
                 bottom: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.3);
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
                 opacity: 0;
                 transition: opacity 0.3s ease-out;
             }
@@ -343,14 +495,14 @@
 
             .mobile-nav-panel {
                 position: relative;
-                background-color: white;
+                background: rgba(10, 10, 15, 0.98);
+                border-right: 1px solid rgba(255, 255, 255, 0.06);
                 width: 20rem;
                 max-width: calc(100% - 3rem);
                 height: 100%;
                 padding: 1.5rem;
-                box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
                 transform: translateX(-100%);
-                transition: transform 0.3s ease-out;
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
                 overflow-y: auto;
             }
 
@@ -358,39 +510,34 @@
                 transform: translateX(0);
             }
 
-            /* Endpoint sections */
+            /* ── Endpoint sections ── */
             .endpoints > div > div[id] {
                 scroll-margin-top: 2rem;
                 padding-top: 1rem;
                 margin-bottom: 3rem;
             }
 
-            /* Code styling */
+            /* ── Code styling ── */
             code {
-                background-color: #f1f5f9;
-                padding: 0.125rem 0.375rem;
-                border-radius: 0.125rem;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                background: rgba(139, 92, 246, 0.1);
+                padding: 0.125rem 0.5rem;
+                border-radius: 0.25rem;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
                 font-size: 0.875em;
-                color: #475569;
+                color: #c4b5fd;
                 font-weight: 500;
             }
 
-            /* Smooth scroll */
-            html {
-                scroll-padding-top: 2rem;
-            }
-
-            /* Desktop nav */
+            /* ── Desktop nav sidebar ── */
             .nav-desktop {
                 padding-right: 1rem;
             }
 
             .nav-desktop a {
-                padding: 0.25rem 0;
+                padding: 0.375rem 0.75rem;
             }
 
-            /* Spacing */
+            /* ── Spacing ── */
             .endpoints {
                 max-width: 100%;
             }
@@ -400,91 +547,109 @@
             }
 
             .endpoints p {
-                color: #475569;
+                color: #a1a1aa;
                 line-height: 1.75;
             }
 
-            /* Link styling */
+            /* ── Link styling ── */
             a {
-                transition: color 0.2s;
+                transition: all 0.25s ease;
             }
 
             a[href^="http"]:not(.nav-link):not(.request-icon):hover {
                 text-decoration: underline;
             }
 
-            /* Button styling */
+            /* ── Button styling ── */
             button {
-                transition: opacity 0.2s;
+                transition: all 0.25s ease;
             }
 
             button:hover {
                 opacity: 0.8;
             }
 
-            /* List styling */
-            .info-box ol {
-                padding-left: 1.5rem;
-            }
-
-            .info-box ol li {
-                margin-bottom: 0.5rem;
-            }
-
-            .info-box ol li strong {
-                color: #1e40af;
-            }
-
-            /* Request info font-mono */
+            /* ── Request info mono ── */
             .request-info .font-mono {
-                color: #e2e8f0;
+                color: #d4d4d8;
                 font-weight: 500;
             }
 
-            /* Focus states */
+            /* ── Focus states ── */
             a:focus-visible,
             button:focus-visible {
-                outline: 2px solid #6366f1;
+                outline: 2px solid #8b5cf6;
                 outline-offset: 2px;
             }
 
-            /* Scrollbar */
+            /* ── Scrollbar ── */
             ::-webkit-scrollbar {
-                width: 8px;
+                width: 6px;
             }
 
             ::-webkit-scrollbar-track {
-                background: #f1f5f9;
+                background: transparent;
             }
 
             ::-webkit-scrollbar-thumb {
-                background: #cbd5e1;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 3px;
             }
 
             ::-webkit-scrollbar-thumb:hover {
-                background: #94a3b8;
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            /* ── Endpoint card hover ── */
+            .endpoint-card {
+                padding: 1.5rem;
+                border-radius: 1rem;
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                background: rgba(255, 255, 255, 0.02);
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .endpoint-card:hover {
+                border-color: rgba(139, 92, 246, 0.15);
+                background: rgba(139, 92, 246, 0.03);
+                box-shadow: 0 0 40px rgba(139, 92, 246, 0.04);
+            }
+
+            /* ── Subtle noise texture ── */
+            .noise-bg {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.015;
+                pointer-events: none;
+                z-index: 0;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+                background-repeat: repeat;
+                background-size: 256px 256px;
             }
         </style>
     </head>
 
     <body>
-        <div class="mobile-header fixed sm:px-6 lg:hidden top-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-b justify-between border-slate-200 w-100 h-12 px-2 flex items-center z-50">
-            <h1 class="text-xl tracking-tight font-extrabold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                CSGO API
-            </h1>
-            <button onclick="openLateralNav()" class="text-slate-600">
+        <div class="noise-bg"></div>
+
+        <div class="mobile-header">
+            <h1 class="sidebar-logo">CSGO API</h1>
+            <button onclick="openLateralNav()" class="text-zinc-400 hover:text-white transition-colors">
                 <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </div>
 
-        <div class="px-4 mx-auto max-w-6xl sm:px-6 lg:px-8 mb-20 pt-16 lg:pt-8 pb-20">
+        <div class="px-4 mx-auto max-w-6xl sm:px-6 lg:px-8 mb-20 pt-16 lg:pt-8 pb-20 relative z-10">
             <div class="mobile-nav-overlay hidden" id="lateral-nav" role="dialog" aria-modal="true">
                 <div class="mobile-nav-backdrop" onClick="closeLateralNav()"></div>
                 <div class="mobile-nav-panel p-6">
                     <button
-                        class="absolute z-10 top-5 right-5 w-8 h-8 flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                        class="absolute z-10 top-5 right-5 w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/5 rounded-lg transition-all"
                         onClick="closeLateralNav()"
                     >
                         <svg viewBox="0 0 10 10" class="w-3 h-3">
@@ -492,7 +657,7 @@
                         </svg>
                     </button>
                     <nav id="nav" class="lg:text-sm lg:leading-6 relative">
-                        <div id="responsive-links" class="space-y-1 pt-6">
+                        <div id="responsive-links" class="space-y-0.5 pt-6">
                             <div><a href="#introduction" class="nav-link block">Introduction</a></div>
                             <div><a href="#list-all" class="nav-link block">List all</a></div>
                             <div><a href="#list-skins" class="nav-link block">List skins</a></div>
@@ -518,12 +683,11 @@
 
             <div class="hidden lg:block fixed z-20 inset-0 left-[max(0px,calc(50%-45rem))] right-auto w-[18rem] pb-10 px-6 overflow-y-auto">
                 <div class="sticky top-6 nav-desktop">
-                    <div class="mb-6">
-                        <h1 class="text-xl tracking-tight font-extrabold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                            CSGO API
-                        </h1>
+                    <div class="mb-8">
+                        <h1 class="sidebar-logo">CSGO API</h1>
+                        <p class="text-xs text-zinc-600 mt-1">Counter-Strike 2 Data</p>
                     </div>
-                    <div class="space-y-1">
+                    <div class="space-y-0.5">
                         <div><a href="#introduction" class="nav-link block">Introduction</a></div>
                         <div><a href="#list-all" class="nav-link block">List all</a></div>
                         <div><a href="#list-skins" class="nav-link block">List skins</a></div>
@@ -548,50 +712,51 @@
 
             <div class="lg:pl-[15rem] xl:pl-[15rem] endpoints">
                 <div class="pb-12 mt-4">
-                    <div id="introduction">
-                        <h1 class="section-heading">Introduction</h1>
+                    <div id="introduction" class="animate-on-scroll">
+                        <h1 class="hero-title">CSGO API</h1>
+                        <p class="text-lg text-zinc-500 mt-2 mb-8 animate-on-scroll stagger-1" style="max-width: 36rem;">
+                            Unofficial JSON API for Counter-Strike 2
+                        </p>
 
-                        <p class="mt-4 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
+                        <p class="mt-4 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed animate-on-scroll stagger-2">
                             Welcome to the unofficial JSON API for Counter-Strike 2. This API provides access
                             to various data aspects of the game, parsed into JSON format for easier
                             integration and use.
                         </p>
 
-                        <p class="mt-4 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
+                        <p class="mt-4 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed animate-on-scroll stagger-3">
                             You can find this project source code
                             <a
-                                class="hover:underline text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
+                                class="text-violet-400 font-medium hover:text-violet-300 transition-colors"
                                 href="https://github.com/ByMykel/CSGO-API"
                                 target="_blank"
                                 >on GitHub</a
                             >.
                         </p>
 
-                        <div class="base-url-box">
+                        <div class="base-url-box animate-on-scroll stagger-4">
                             <div class="base-url-header">
-                                <span class="text-indigo-400 font-semibold text-sm">BASE URL</span>
+                                <span>Base URL</span>
                             </div>
                             <div class="base-url-content">
                                 https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/{language}
                             </div>
                         </div>
 
-                        <p class="mt-6 text-base md:text-lg text-slate-700 mb-4 leading-relaxed">
+                        <p class="mt-8 text-base md:text-lg text-zinc-400 mb-4 leading-relaxed animate-on-scroll">
                             This API currently has
-                            <strong class="text-slate-900">2 languages enabled</strong> (with around
-                            <strong class="text-slate-900">30 languages</strong> available). To access
+                            <strong class="text-zinc-200">2 languages enabled</strong> (with around
+                            <strong class="text-zinc-200">30 languages</strong> available). To access
                             information in a specific language, replace
-                            <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm font-mono"
-                                >{language}</code
-                            >
+                            <code>{language}</code>
                             in the URL with one of the currently enabled language codes:
                         </p>
-                        <div class="mt-3 mb-6">
+                        <div class="mt-3 mb-6 animate-on-scroll">
                             <span class="language-code">en</span>
                             <span class="language-code">zh-CN</span>
                         </div>
 
-                        <div class="info-box">
+                        <div class="info-box animate-on-scroll">
                             <h3>Need more languages?</h3>
                             <p class="mb-3">If you need support for additional languages, you can:</p>
                             <ol class="list-decimal list-inside space-y-2 mb-3">
@@ -611,42 +776,43 @@
 
                     <hr />
 
-                    <div id="list-all" class="mb-12">
-                        <h1 class="section-heading">List all</h1>
+                    <div id="list-all" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List all</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Object with all items accessible by their id.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Object with all items accessible by their id.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/all.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/all.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Object</span> with all items accessible by their id:
                             </div>
@@ -657,46 +823,48 @@
                             <div class="structure-item ml-4">
                                 Each value is an item <span class="structure-key">object</span> containing all item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-skins" class="mb-12">
-                        <h1 class="section-heading">List skins</h1>
+                    <div id="list-skins" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List skins</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all weapon skins grouped by pattern and wear condition.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all weapon skins grouped by pattern and wear condition.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/skins.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/skins.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -776,46 +944,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-skins-not-grouped" class="mb-12">
-                        <h1 class="section-heading">List skins not grouped</h1>
+                    <div id="list-skins-not-grouped" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List skins not grouped</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all weapon skins with each wear condition as a separate item.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all weapon skins with each wear condition as a separate item.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/skins_not_grouped.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/skins_not_grouped.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -899,46 +1069,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-stickers" class="mb-12">
-                        <h1 class="section-heading">List stickers</h1>
+                    <div id="list-stickers" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List stickers</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all available stickers.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all available stickers.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/stickers.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/stickers.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/stickers.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/stickers.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -994,46 +1166,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-sticker-slabs" class="mb-12">
-                        <h1 class="section-heading">List sticker slabs</h1>
+                    <div id="list-sticker-slabs" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List sticker slabs</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of sticker slabs (sealed stickers that can be opened).
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of sticker slabs (sealed stickers that can be opened).
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/sticker_slabs.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/sticker_slabs.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/sticker_slabs.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/sticker_slabs.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1089,46 +1263,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-keychain" class="mb-12">
-                        <h1 class="section-heading">List keychains</h1>
+                    <div id="list-keychain" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List keychains</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all weapon charms/keychains.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all weapon charms/keychains.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/keychains.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keychains.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/keychains.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keychains.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1168,46 +1344,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-collections" class="mb-12">
-                        <h1 class="section-heading">List collections</h1>
+                    <div id="list-collections" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List collections</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all weapon skin collections.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all weapon skin collections.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/collections.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collections.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/collections.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collections.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1235,46 +1413,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-crates" class="mb-12">
-                        <h1 class="section-heading">List crates</h1>
+                    <div id="list-crates" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List crates</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            This list includes cases, capsules, graffiti boxes, music kit boxes and souvenir packages.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                This list includes cases, capsules, graffiti boxes, music kit boxes and souvenir packages.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/crates.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/crates.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/crates.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/crates.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1338,46 +1518,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-keys" class="mb-12">
-                        <h1 class="section-heading">List keys</h1>
+                    <div id="list-keys" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List keys</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all case keys.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all case keys.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/keys.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keys.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/keys.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keys.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1417,46 +1599,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-collectibles" class="mb-12">
-                        <h1 class="section-heading">List collectibles</h1>
+                    <div id="list-collectibles" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List collectibles</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all collectible items (coins, medals, etc.).
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all collectible items (coins, medals, etc.).
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/collectibles.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/collectibles.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1500,46 +1684,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-agents" class="mb-12">
-                        <h1 class="section-heading">List agents</h1>
+                    <div id="list-agents" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List agents</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all player agents/characters.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all player agents/characters.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/agents.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/agents.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/agents.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/agents.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1587,46 +1773,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-patches" class="mb-12">
-                        <h1 class="section-heading">List patches</h1>
+                    <div id="list-patches" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List patches</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all agent patches.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all agent patches.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/patches.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/patches.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/patches.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/patches.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1662,46 +1850,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-graffiti" class="mb-12">
-                        <h1 class="section-heading">List graffiti</h1>
+                    <div id="list-graffiti" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List graffiti</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all graffiti items.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all graffiti items.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/graffiti.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/graffiti.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/graffiti.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/graffiti.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1741,46 +1931,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-music-kits" class="mb-12">
-                        <h1 class="section-heading">List music kits</h1>
+                    <div id="list-music-kits" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List music kits</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all music kits.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all music kits.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/music_kits.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/music_kits.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1820,46 +2012,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-base-weapons" class="mb-12">
-                        <h1 class="section-heading">List base weapons</h1>
+                    <div id="list-base-weapons" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List base weapons</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of all base weapons and default items (gloves, knives, etc.).
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of all base weapons and default items (gloves, knives, etc.).
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/base_weapons.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/base_weapons.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1887,46 +2081,48 @@
                                 <span class="structure-key">image</span>
                                 <span class="structure-type type-string">(string)</span> - Image URL
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="list-highlights" class="mb-12">
-                        <h1 class="section-heading">List highlights</h1>
+                    <div id="list-highlights" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">List highlights</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            Returns an array of tournament highlight charms.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                Returns an array of tournament highlight charms.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/highlights.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/highlights.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Array</span> of objects with:
                             </div>
@@ -1990,46 +2186,48 @@
                                 <span class="structure-key">original</span>
                                 <span class="structure-type type-object">(object)</span> - Original item data
                             </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
 
-                    <div id="inventory" class="mb-12">
-                        <h1 class="section-heading">Inventory</h1>
+                    <div id="inventory" class="mb-12 animate-on-scroll">
+                        <div class="endpoint-card">
+                            <h1 class="section-heading">Inventory</h1>
 
-                        <p class="mt-2 text-base md:text-lg text-slate-700 mb-6 leading-relaxed">
-                            All items grouped by category for easy lookup. Skins use weapon_id and paint_index as keys, while other categories use def_index.
-                        </p>
+                            <p class="mt-2 text-base md:text-lg text-zinc-400 mb-6 leading-relaxed">
+                                All items grouped by category for easy lookup. Skins use weapon_id and paint_index as keys, while other categories use def_index.
+                            </p>
 
-                        <div class="request-info">
-                            <div class="flex items-center">
-                                <span class="request-method">GET</span>
-                                <span class="font-mono text-slate-200">/inventory.json</span>
-                            </div>
-                            <a
-                                href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/inventory.json"
-                                target="_blank"
-                                class="hover:scale-110 transition-transform duration-200"
-                            >
-                                <svg
-                                    class="request-icon"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            <div class="request-info">
+                                <div class="flex items-center">
+                                    <span class="request-method">GET</span>
+                                    <span class="font-mono text-zinc-300">/inventory.json</span>
+                                </div>
+                                <a
+                                    href="https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/inventory.json"
+                                    target="_blank"
+                                    class="hover:scale-110 transition-transform duration-200"
                                 >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    ></path>
-                                </svg>
-                            </a>
-                        </div>
+                                    <svg
+                                        class="request-icon"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            </div>
 
-                        <div class="response-structure">
-                            <h4 class="text-slate-200 font-semibold mb-3">Response Structure</h4>
+                            <div class="response-structure">
+                                <h4>Response Structure</h4>
                             <div class="structure-item">
                                 <span class="structure-key">Object</span> with categories:
                             </div>
@@ -2104,6 +2302,7 @@
                                 <span class="structure-key">image</span>
                                 <span class="structure-type type-string">(string)</span> - Image URL
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2124,8 +2323,8 @@
             };
 
             (() => {
+                // Mobile nav link click
                 const links = document.querySelectorAll("#responsive-links a");
-
                 for (const link of links) {
                     link.addEventListener("click", () => {
                         closeLateralNav();
@@ -2133,6 +2332,7 @@
                     });
                 }
 
+                // Smooth scroll for anchor links
                 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     anchor.addEventListener("click", function (e) {
                         e.preventDefault();
@@ -2142,6 +2342,7 @@
                     });
                 });
 
+                // Scroll spy for active nav link
                 document.addEventListener("scroll", () => {
                     let sections = document.querySelectorAll(".endpoints div[id]");
                     let currentSection = null;
@@ -2156,7 +2357,6 @@
                     if (currentSection) {
                         history.replaceState(null, null, `#${currentSection.id}`);
 
-                        // Update desktop nav
                         document.querySelectorAll(".nav-desktop a").forEach(link => {
                             link.classList.remove("active");
                         });
@@ -2166,7 +2366,6 @@
                             navLink.classList.add("active");
                         }
 
-                        // Update mobile nav
                         document.querySelectorAll("#responsive-links a").forEach(link => {
                             link.classList.remove("active");
                         });
@@ -2179,8 +2378,26 @@
                         }
                     }
                 });
+
+                // Intersection Observer for scroll animations
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add("visible");
+                            }
+                        });
+                    },
+                    {
+                        threshold: 0.1,
+                        rootMargin: "0px 0px -40px 0px",
+                    }
+                );
+
+                document.querySelectorAll(".animate-on-scroll").forEach(el => {
+                    observer.observe(el);
+                });
             })();
         </script>
     </body>
 </html>
-
