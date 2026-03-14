@@ -12,7 +12,7 @@ const endpoints = [
         title: "List all",
         description: "Object with all items accessible by their id.",
         endpoint: "/all.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/all.json",
         jsonFile: "public/api/en/all.json",
         isObject: true, // Special case - it's an object, not an array
     },
@@ -21,7 +21,7 @@ const endpoints = [
         title: "List skins",
         description: "Returns an array of all weapon skins grouped by pattern and wear condition.",
         endpoint: "/skins.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/skins.json",
         jsonFile: "public/api/en/skins.json",
     },
     {
@@ -29,7 +29,7 @@ const endpoints = [
         title: "List skins not grouped",
         description: "Returns an array of all weapon skins with each wear condition as a separate item.",
         endpoint: "/skins_not_grouped.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/skins_not_grouped.json",
         jsonFile: "public/api/en/skins_not_grouped.json",
     },
     {
@@ -37,7 +37,7 @@ const endpoints = [
         title: "List stickers",
         description: "Returns an array of all available stickers.",
         endpoint: "/stickers.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/stickers.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/stickers.json",
         jsonFile: "public/api/en/stickers.json",
     },
     {
@@ -45,7 +45,7 @@ const endpoints = [
         title: "List sticker slabs",
         description: "Returns an array of sticker slabs (sealed stickers that can be opened).",
         endpoint: "/sticker_slabs.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/sticker_slabs.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/sticker_slabs.json",
         jsonFile: "public/api/en/sticker_slabs.json",
     },
     {
@@ -53,7 +53,7 @@ const endpoints = [
         title: "List keychains",
         description: "Returns an array of all weapon charms/keychains.",
         endpoint: "/keychains.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keychains.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/keychains.json",
         jsonFile: "public/api/en/keychains.json",
     },
     {
@@ -61,7 +61,7 @@ const endpoints = [
         title: "List collections",
         description: "Returns an array of all weapon skin collections.",
         endpoint: "/collections.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collections.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/collections.json",
         jsonFile: "public/api/en/collections.json",
     },
     {
@@ -70,7 +70,7 @@ const endpoints = [
         description:
             "This list includes cases, capsules, graffiti boxes, music kit boxes and souvenir packages.",
         endpoint: "/crates.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/crates.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/crates.json",
         jsonFile: "public/api/en/crates.json",
     },
     {
@@ -78,7 +78,7 @@ const endpoints = [
         title: "List keys",
         description: "Returns an array of all case keys.",
         endpoint: "/keys.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keys.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/keys.json",
         jsonFile: "public/api/en/keys.json",
     },
     {
@@ -86,7 +86,7 @@ const endpoints = [
         title: "List collectibles",
         description: "Returns an array of all collectible items (coins, medals, etc.).",
         endpoint: "/collectibles.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/collectibles.json",
         jsonFile: "public/api/en/collectibles.json",
     },
     {
@@ -94,7 +94,7 @@ const endpoints = [
         title: "List agents",
         description: "Returns an array of all player agents/characters.",
         endpoint: "/agents.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/agents.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/agents.json",
         jsonFile: "public/api/en/agents.json",
     },
     {
@@ -102,7 +102,7 @@ const endpoints = [
         title: "List patches",
         description: "Returns an array of all agent patches.",
         endpoint: "/patches.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/patches.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/patches.json",
         jsonFile: "public/api/en/patches.json",
     },
     {
@@ -110,7 +110,7 @@ const endpoints = [
         title: "List graffiti",
         description: "Returns an array of all graffiti items.",
         endpoint: "/graffiti.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/graffiti.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/graffiti.json",
         jsonFile: "public/api/en/graffiti.json",
     },
     {
@@ -118,7 +118,7 @@ const endpoints = [
         title: "List music kits",
         description: "Returns an array of all music kits.",
         endpoint: "/music_kits.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/music_kits.json",
         jsonFile: "public/api/en/music_kits.json",
     },
     {
@@ -126,7 +126,7 @@ const endpoints = [
         title: "List base weapons",
         description: "Returns an array of all base weapons and default items (gloves, knives, etc.).",
         endpoint: "/base_weapons.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/base_weapons.json",
         jsonFile: "public/api/en/base_weapons.json",
     },
     {
@@ -134,7 +134,7 @@ const endpoints = [
         title: "List highlights",
         description: "Returns an array of tournament highlight charms.",
         endpoint: "/highlights.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/highlights.json",
         jsonFile: "public/api/en/highlights.json",
     },
     {
@@ -143,7 +143,7 @@ const endpoints = [
         description:
             "All items grouped by category for easy lookup. Skins use weapon_id and paint_index as keys, while other categories use def_index.",
         endpoint: "/inventory.json",
-        url: "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/inventory.json",
+        url: "https://raw.githubusercontent.com/sak0a/CSGO-API/main/public/api/en/inventory.json",
         jsonFile: "public/api/en/inventory.json",
         isInventory: true,
     },
