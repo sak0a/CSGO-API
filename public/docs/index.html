@@ -744,23 +744,18 @@
                         </div>
 
                         <p class="mt-8 text-base md:text-lg text-zinc-400 mb-4 leading-relaxed animate-on-scroll">
-                            This API currently has
-                            <strong class="text-zinc-200">2 languages enabled</strong> (with around
-                            <strong class="text-zinc-200">30 languages</strong> available). To access
-                            information in a specific language, replace
-                            <code>{language}</code>
-                            in the URL with one of the currently enabled language codes:
+                            Currently only <strong class="text-zinc-200">English</strong> is supported.
+                            Only English data is downloaded and generated.
+                            Use <code>en</code> as the language parameter in the URL:
                         </p>
                         <div class="mt-3 mb-6 animate-on-scroll">
                             <span class="language-code">en</span>
-                            <span class="language-code">zh-CN</span>
                         </div>
 
                         <div class="info-box animate-on-scroll">
                             <h3>Need more languages?</h3>
-                            <p class="mb-3">If you need support for additional languages, you can:</p>
+                            <p class="mb-3">If you need support for additional languages, you can fork this repository and:</p>
                             <ol class="list-decimal list-inside space-y-2 mb-3">
-                                <li><strong>Fork this repository</strong></li>
                                 <li>
                                     <strong>Uncomment the desired languages</strong> in
                                     <code>constants.js</code>
