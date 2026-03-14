@@ -1,10 +1,9 @@
 FROM node:20-alpine AS builder
 
-RUN apk add --no-cache git
-
 WORKDIR /app
-RUN git clone --depth 1 https://github.com/ByMykel/CSGO-API.git .
+COPY package*.json ./
 RUN npm install
+COPY . .
 RUN npm run update-data-force
 RUN npm run group-data-force
 RUN npm run generate-docs
